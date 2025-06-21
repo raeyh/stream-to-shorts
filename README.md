@@ -13,9 +13,10 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Edit `config/default.yml` with your API credentials and desired streamers. Each
-stream entry can specify a ``platform`` (``twitch`` or ``youtube``) and a
-``username`` or channel ID.
+Edit `config/default.yml` with your API credentials and desired streamers.
+Credentials are defined under the ``credentials`` section and individual
+streams specify a ``platform`` (``twitch`` or ``youtube``), a ``username`` or
+channel ID and an optional ``quality`` setting.
 
 ## Running
 
