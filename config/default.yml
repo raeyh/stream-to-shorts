@@ -1,0 +1,12 @@
+# Example configuration for stream-to-shorts
+
+streams:
+  - username: example_streamer
+    quality: best
+
+storage:
+  recordings: recordings/
+  database: data.db
+
+scheduler:
+  interval: 60
