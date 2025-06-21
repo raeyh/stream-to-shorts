@@ -1,8 +1,11 @@
 # Example configuration for stream-to-shorts
 
 streams:
-  - username: example_streamer
+  - platform: twitch
+    username: example_streamer
     quality: best
+  # - platform: youtube
+  #   username: UCxxxxxx  # channel ID
 
 storage:
   recordings: recordings/

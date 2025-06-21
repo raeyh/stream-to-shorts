@@ -1,9 +1,16 @@
-"""Twitch stream monitoring utilities."""
+"""Stream monitoring utilities.
+
+This module now provides a small abstraction layer that makes it possible to
+support multiple streaming platforms.  The original Twitch specific monitor is
+kept for backwards compatibility and a basic YouTube implementation is
+included as an example.  Additional platforms can be added by creating new
+classes that implement :class:`BaseStreamMonitor`.
+"""
 from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional, Protocol
 
 import requests
 
@@ -19,7 +26,14 @@ class StreamInfo:
     url: str
 
 
-class StreamMonitor:
+class BaseStreamMonitor(Protocol):
+    """Interface for a streaming platform monitor."""
+
+    def get_live_streams(self, user_logins: List[str]) -> List[StreamInfo]:
+        """Return metadata for live streams from a list of usernames."""
+
+
+class TwitchStreamMonitor:
     """Monitor Twitch for live streams."""
 
     def __init__(self, client_id: str, oauth_token: str) -> None:
@@ -35,10 +49,11 @@ class StreamMonitor:
         }
 
     def get_live_streams(self, user_logins: List[str]) -> List[StreamInfo]:
-        """Return metadata for live streams from a list of usernames."""
         params = [("user_login", login) for login in user_logins]
         self.logger.debug("Fetching live streams for %s", user_logins)
-        resp = requests.get(self.base_url, headers=self._headers(), params=params, timeout=10)
+        resp = requests.get(
+            self.base_url, headers=self._headers(), params=params, timeout=10
+        )
         resp.raise_for_status()
         data = resp.json().get("data", [])
         streams = []
@@ -53,3 +68,45 @@ class StreamMonitor:
                 )
             )
         return streams
+
+
+class YouTubeStreamMonitor:
+    """Basic YouTube live stream monitor using the Data API."""
+
+    def __init__(self, api_key: str) -> None:
+        self.api_key = api_key
+        self.base_url = "https://www.googleapis.com/youtube/v3/search"
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def get_live_streams(self, channel_ids: List[str]) -> List[StreamInfo]:
+        streams = []
+        for cid in channel_ids:
+            params = {
+                "part": "snippet",
+                "channelId": cid,
+                "type": "video",
+                "eventType": "live",
+                "key": self.api_key,
+            }
+            self.logger.debug("Fetching live streams for channel %s", cid)
+            resp = requests.get(self.base_url, params=params, timeout=10)
+            resp.raise_for_status()
+            items = resp.json().get("items", [])
+            for item in items:
+                snippet = item.get("snippet", {})
+                streams.append(
+                    StreamInfo(
+                        streamer=snippet.get("channelTitle", cid),
+                        title=snippet.get("title"),
+                        game=None,
+                        viewer_count=0,
+                        url=f"https://www.youtube.com/watch?v={item['id']['videoId']}",
+                    )
+                )
+        return streams
+
+
+# Backwards compatibility: previously the Twitch implementation was named
+# ``StreamMonitor``.  Export the Twitch monitor under that name so existing
+# imports continue to work.
+StreamMonitor = TwitchStreamMonitor
