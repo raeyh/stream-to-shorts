@@ -11,6 +11,7 @@ MODULES = [
     'src.video_editor',
     'src.content_manager',
     'src.scheduler',
+    'src.platform_registry',
 ]
 
 def test_imports():

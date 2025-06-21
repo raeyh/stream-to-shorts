@@ -1,9 +1,9 @@
 # stream-to-shorts
 
-A minimal system for monitoring Twitch streams and creating short clips. This
-repository provides a simple skeleton with pluggable modules. It is **not** a
-fully featured production system but serves as a starting point for further
-development.
+A minimal system for monitoring live streams and creating short clips. The
+project started with Twitch support and now exposes a small abstraction layer so
+additional platforms can be plugged in easily. It is **not** a fully featured
+production system but serves as a starting point for further development.
 
 ## Setup
 
@@ -13,8 +13,9 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Edit `config/default.yml` with your Twitch API credentials and desired
-streamers.
+Edit `config/default.yml` with your API credentials and desired streamers. Each
+stream entry can specify a ``platform`` (``twitch`` or ``youtube``) and a
+``username`` or channel ID.
 
 ## Running
 
