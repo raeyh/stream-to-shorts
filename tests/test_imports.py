@@ -12,6 +12,7 @@ MODULES = [
     'src.content_manager',
     'src.scheduler',
     'src.platform_registry',
+    'src.webapp',
 ]
 
 def test_imports():

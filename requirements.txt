@@ -3,3 +3,5 @@ streamlink
 ffmpeg-python
 apscheduler
 PyYAML
+
+Flask
