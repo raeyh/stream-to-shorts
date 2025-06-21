@@ -2,8 +2,8 @@
 
 credentials:
   twitch:
-    client_id: YOUR_CLIENT_ID
-    oauth_token: YOUR_TOKEN
+    client_id: ahinwys76d39sl7cfj2gjrk74ibg6f
+    oauth_token: owb07nla6jwcvyn86ah1rp8j3x02l5
   # youtube:
   #   api_key: YOUR_API_KEY
 
