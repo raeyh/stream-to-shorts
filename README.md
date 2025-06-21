@@ -18,6 +18,18 @@ Credentials are defined under the ``credentials`` section and individual
 streams specify a ``platform`` (``twitch`` or ``youtube``), a ``username`` or
 channel ID and an optional ``quality`` setting.
 
+## Web Interface
+
+You can edit the configuration using a small Flask web interface. After
+installing the dependencies, start the server:
+
+```bash
+python -m src.webapp
+```
+
+Open `http://localhost:8000` in your browser to update credentials and the list
+of streams.
+
 ## Running
 
 ```bash
