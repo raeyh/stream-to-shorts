@@ -1,11 +1,19 @@
 # Example configuration for stream-to-shorts
 
+credentials:
+  twitch:
+    client_id: YOUR_CLIENT_ID
+    oauth_token: YOUR_TOKEN
+  # youtube:
+  #   api_key: YOUR_API_KEY
+
 streams:
   - platform: twitch
     username: example_streamer
     quality: best
   # - platform: youtube
   #   username: UCxxxxxx  # channel ID
+  #   quality: best
 
 storage:
   recordings: recordings/
